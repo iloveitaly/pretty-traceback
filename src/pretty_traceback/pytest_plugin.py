@@ -1,13 +1,33 @@
 from . import formatting
 import pytest
 
-def pytest_addini(parser):
+from pytest import Config
+
+
+def _get_option(config: Config, key: str):
+    val = config.getoption(key)
+
+    if val is None:
+        val = config.getini(key)
+
+    return val
+
+
+def pytest_addoption(parser):
     parser.addini(
         "enable_pretty_traceback",
         "Enable the pretty traceback plugin",
         type="bool",
-        default=True
+        default=True,
     )
+
+    parser.addini(
+        "enable_pretty_traceback_local_stack_only",
+        "Enable the pretty traceback plugin",
+        type="bool",
+        default=True,
+    )
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -22,8 +42,20 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()  # Get the generated TestReport object
 
     # Check if the report is for the 'call' phase (test execution) and if it failed
-    if item.config.getini("enable_pretty_traceback") and report.when == "call" and report.failed:
+    if (
+        _get_option(item.config, "enable_pretty_traceback")
+        and report.when == "call"
+        and report.failed
+    ):
         value = call.excinfo.value
         tb = call.excinfo.tb
-        formatted_traceback = formatting.exc_to_traceback_str(value, tb, color=True)
+
+        formatted_traceback = formatting.exc_to_traceback_str(
+            value,
+            tb,
+            color=True,
+            local_stack_only=_get_option(
+                item.config, "enable_pretty_traceback_local_stack_only"
+            ),
+        )
         report.longrepr = formatted_traceback

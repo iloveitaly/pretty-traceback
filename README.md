@@ -99,6 +99,16 @@ except ImportError:
 
 Note, that the hook is only installed if the existing hook is the default. Any existing hooks that were installed before the call of `pretty_traceback.install` will be left in place.
 
+## Local Only Traceback Usage
+
+```python
+import pretty_traceback
+
+pretty_traceback.install(local_only=True)
+```
+
+This will filter out any frames from standard library or site-packages, showing only local frames.
+
 ## IPython Integration
 
 The `pretty_traceback` package also provides a `IPython` extension:
