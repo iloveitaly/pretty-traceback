@@ -76,4 +76,9 @@ setuptools.setup(
     python_requires=">=2.7",
     zip_safe=True,
     classifiers=classifiers,
+    entry_points={
+        'pytest11': [
+            'pretty_traceback = pretty_traceback.pytest_plugin',
+        ],
+    }
 )
