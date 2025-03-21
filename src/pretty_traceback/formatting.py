@@ -301,7 +301,7 @@ def _aliases_to_lines(ctx: Context, color: bool = False) -> typ.Iterable[str]:
             yield "    " + alias.ljust(alias_padding) + ": " + fmt_module.format(path)
 
 
-def _rows_to_lines(rows: typ.List[PaddedRow], color: bool = False) -> typ.Iterable[str]:
+def _rows_to_lines(rows: typ.List[PaddedRow], color: bool = False, local_stack_only: bool = False) -> typ.Iterable[str]:
 
     # apply colors and additional separators/ spacing
     fmt_module  = FMT_MODULE if color else "{0}"
@@ -339,6 +339,10 @@ def _rows_to_lines(rows: typ.List[PaddedRow], color: bool = False) -> typ.Iterab
 
         line = "".join(parts)
 
+        if local_stack_only and not alias == "<pwd>":
+            continue
+        
+        # bold any entries which are the current working directory
         if alias == "<pwd>":
             yield line.replace(colorama.Style.NORMAL, colorama.Style.BRIGHT)
         else:
@@ -355,7 +359,7 @@ def _traceback_to_entries(traceback: types.TracebackType) -> typ.Iterable[com.En
         yield com.Entry(module, call, lineno, context)
 
 
-def _format_traceback(ctx: Context, traceback: com.Traceback, color: bool = False) -> str:
+def _format_traceback(ctx: Context, traceback: com.Traceback, color: bool = False, local_stack_only: bool = False) -> str:
     padded_rows = list(_padded_rows(ctx))
 
     lines = []
@@ -364,7 +368,7 @@ def _format_traceback(ctx: Context, traceback: com.Traceback, color: bool = Fals
         lines.extend(_aliases_to_lines(ctx, color))
 
     lines.append(com.TRACEBACK_HEAD)
-    lines.extend(_rows_to_lines(padded_rows, color))
+    lines.extend(_rows_to_lines(padded_rows, color, local_stack_only))
 
     if traceback.exc_name == 'RecursionError' and len(lines) > 100:
         prelude_index = 0
@@ -390,12 +394,12 @@ def _format_traceback(ctx: Context, traceback: com.Traceback, color: bool = Fals
     return os.linesep.join(lines) + os.linesep
 
 
-def format_traceback(traceback: com.Traceback, color: bool = False) -> str:
+def format_traceback(traceback: com.Traceback, color: bool = False, local_stack_only: bool = False) -> str:
     ctx = _init_entries_context(traceback.entries)
-    return _format_traceback(ctx, traceback, color)
+    return _format_traceback(ctx, traceback, color, local_stack_only)
 
 
-def format_tracebacks(tracebacks: typ.List[com.Traceback], color: bool = False) -> str:
+def format_tracebacks(tracebacks: typ.List[com.Traceback], color: bool = False, local_stack_only: bool = False) -> str:
     traceback_strs: typ.List[str] = []
 
     for tb_tup in tracebacks:
@@ -406,7 +410,7 @@ def format_tracebacks(tracebacks: typ.List[com.Traceback], color: bool = False) 
             # traceback_strs.append("vvv happend after ^^^ - ")
             traceback_strs.append(com.CONTEXT_HEAD + os.linesep)
 
-        traceback_str = format_traceback(tb_tup, color)
+        traceback_str = format_traceback(tb_tup, color, local_stack_only)
         traceback_strs.append(traceback_str)
 
     return os.linesep.join(traceback_strs).strip()
@@ -420,6 +424,7 @@ def exc_to_traceback_str(
     exc_value: BaseException,
     traceback: types.TracebackType,
     color    : bool = False,
+    local_stack_only: bool = False,
 ) -> str:
     # NOTE (mb 2020-08-13): wrt. cause vs context see
     #   https://www.python.org/dev/peps/pep-3134/#enhanced-reporting
@@ -454,7 +459,7 @@ def exc_to_traceback_str(
 
     tracebacks = list(reversed(tracebacks))
 
-    return format_tracebacks(tracebacks, color)
+    return format_tracebacks(tracebacks, color, local_stack_only)
 
 
 class LoggingFormatterMixin:

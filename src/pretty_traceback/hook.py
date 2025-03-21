@@ -14,14 +14,14 @@ import colorama
 from pretty_traceback import formatting
 
 
-def init_excepthook(color: bool) -> typ.Callable:
+def init_excepthook(color: bool, local_stack_only: bool) -> typ.Callable:
     def excepthook(
         exc_type: typ.Type[BaseException],
         exc_value: BaseException,
         traceback: types.TracebackType,
     ) -> None:
         # pylint:disable=unused-argument
-        tb_str = formatting.exc_to_traceback_str(exc_value, traceback, color) + "\n"
+        tb_str = formatting.exc_to_traceback_str(exc_value, traceback, color, local_stack_only) + "\n"
         if color:
             colorama.init()
             try:
@@ -39,6 +39,7 @@ def install(
     color: bool = True,
     only_tty: bool = True,
     only_hook_if_default_excepthook: bool = True,
+    local_stack_only: bool = False,
 ) -> None:
     """Hook the current excepthook to the pretty_traceback.
 
@@ -68,7 +69,7 @@ def install(
     if only_hook_if_default_excepthook and not is_default_exepthook:
         return
 
-    sys.excepthook = init_excepthook(color=color)
+    sys.excepthook = init_excepthook(color=color, local_stack_only=local_stack_only)
 
 
 def uninstall() -> None:
