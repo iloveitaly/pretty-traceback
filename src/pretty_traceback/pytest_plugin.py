@@ -59,3 +59,23 @@ def pytest_runtest_makereport(item, call):
             ),
         )
         report.longrepr = formatted_traceback
+
+
+def pytest_exception_interact(node, call, report):
+    """
+    This can run during collection, not just test execution.
+
+    So, if there's an import or other pre-run error in pytest, this will apply the correct formatting.
+    """
+    if report.failed:
+        value = call.excinfo.value
+        tb = call.excinfo.tb
+        formatted_traceback = formatting.exc_to_traceback_str(
+            value,
+            tb,
+            color=True,
+            local_stack_only=_get_option(
+                node.config, "enable_pretty_traceback_local_stack_only"
+            ),
+        )
+        report.longrepr = formatted_traceback
