@@ -44,7 +44,6 @@ def pytest_runtest_makereport(item, call):
     # Check if the report is for the 'call' phase (test execution) and if it failed
     if (
         _get_option(item.config, "enable_pretty_traceback")
-        and report.when == "call"
         and report.failed
     ):
         value = call.excinfo.value
