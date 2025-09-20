@@ -1,0 +1,40 @@
+[tools]
+python = "3.10"
+
+[tasks.install]
+description = "Install dependencies"
+run = "uv sync --all-extras"
+
+[tasks.test]
+description = "Run tests"
+run = "uv run pytest"
+
+[tasks.lint]
+description = "Run linting"
+run = [
+    "uv run ruff check src/ test/",
+    "uv run mypy src/"
+]
+
+[tasks.format]
+description = "Format and fix code"
+run = [
+    "uv run ruff format src/ test/",
+    "uv run ruff check --fix src/ test/"
+]
+
+[tasks.check]
+description = "Check code without fixing"
+run = [
+    "uv run ruff check src/ test/",
+    "uv run ruff format --check src/ test/",
+    "uv run mypy src/"
+]
+
+[tasks.build]
+description = "Build package"
+run = "uv build"
+
+[tasks.clean]
+description = "Clean build artifacts"
+run = "rm -rf dist/ build/ *.egg-info/ .mypy_cache/ .pytest_cache/"

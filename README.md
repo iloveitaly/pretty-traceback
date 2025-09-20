@@ -27,7 +27,7 @@ In other words, get this 😍
 
 <div align="center">
 <p align="center">
-  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/example_tb4.png">
+  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/docs/screenshots/example_tb4.png">
 </p>
 </div>
 
@@ -68,7 +68,7 @@ If your terminal is wide enough, the long paths are preserved.
 
 <div align="center">
 <p align="center">
-  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/example_tb5.png">
+  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/docs/screenshots/example_tb5.png">
 </p>
 </div>
 
@@ -138,19 +138,19 @@ except ImportError:
 
 <div align="center">
 <p align="center">
-  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/example_tb0.png">
+  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/docs/screenshots/example_tb0.png">
 </p>
 </div>
 
 <div align="center">
 <p align="center">
-  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/example_tb3.png">
+  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/docs/screenshots/example_tb3.png">
 </p>
 </div>
 
 <div align="center">
 <p align="center">
-  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/example_tb_wide.png">
+  <img alt="logo" src="https://github.com/mbarkhau/pretty-traceback/raw/master/docs/screenshots/example_tb_wide.png">
 </p>
 </div>
 
