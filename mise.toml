@@ -35,6 +35,20 @@ run = [
 description = "Build package"
 run = "uv build"
 
+[tasks.publish]
+description = "Publish package to PyPI"
+run = [
+    "uv build",
+    "uv publish"
+]
+
+[tasks.publish-test]
+description = "Publish package to TestPyPI"
+run = [
+    "uv build",
+    "uv publish --publish-url https://test.pypi.org/legacy/"
+]
+
 [tasks.clean]
 description = "Clean build artifacts"
-run = "rm -rf dist/ build/ *.egg-info/ .mypy_cache/ .pytest_cache/"
+run = "rm -rf dist/ build/ *.egg-info/ .mypy_cache/ .pytest_cache/ .ruff_cache/"

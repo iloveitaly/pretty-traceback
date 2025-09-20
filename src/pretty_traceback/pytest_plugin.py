@@ -14,6 +14,20 @@ def _get_option(config: Config, key: str):
 
 
 def pytest_addoption(parser):
+    parser.addoption(
+        "--enable_pretty_traceback",
+        action="store_true",
+        default=None,
+        help="Enable the pretty traceback plugin",
+    )
+
+    parser.addoption(
+        "--enable_pretty_traceback_local_stack_only",
+        action="store_true",
+        default=None,
+        help="Enable the pretty traceback plugin with local stack only",
+    )
+
     parser.addini(
         "enable_pretty_traceback",
         "Enable the pretty traceback plugin",

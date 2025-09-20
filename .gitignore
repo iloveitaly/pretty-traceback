@@ -1,36 +1,46 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
 
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
-env/
-venv/
-venv2/
-venv3/
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
+.eggs/
 lib/
 lib64/
-vendor/
 parts/
 sdist/
 var/
-public/
-.mypy_cache/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.eggs/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# uv
+# Note: uv.lock should be committed to version control
+
+# Modern Python tooling
+.mypy_cache/
 .pytest_cache/
-.ipynb_checkpoints/
-package-lock.json
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

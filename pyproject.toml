@@ -68,10 +68,8 @@ lint = [
     "mypy>=0.790",
 ]
 build = [
-    "readme_renderer[md]",
-    "twine",
-    "md-toc",
     "bumpver",
+    "md-toc",
     "lxml",
 ]
 
